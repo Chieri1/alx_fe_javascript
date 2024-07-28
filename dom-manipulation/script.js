@@ -160,6 +160,63 @@ const quotes = [
     // Save the selected category to local storage
     localStorage.setItem('selectedCategory', categoryFilter);
   }
+
+
+  const serverUrl = 'https://jsonplaceholder.typicode.com/posts'; // Mock API endpoint
+
+// Fetch quotes from the simulated server
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(serverUrl);
+    const serverQuotes = await response.json();
+    return serverQuotes;
+  } catch (error) {
+    console.error('Error fetching quotes from server:', error);
+    return [];
+  }
+}
+
+// Simulate posting quotes to the server
+async function postQuotesToServer(quote) {
+  try {
+    const response = await fetch(serverUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(quote)
+    });
+    return response.json();
+  } catch (error) {
+    console.error('Error posting quotes to server:', error);
+  }
+}
+
+// Function to sync local quotes with the server
+async function syncWithServer() {
+    const serverQuotes = await fetchQuotesFromServer();
+  
+    // Compare server quotes with local quotes and update local storage
+    const newQuotes = serverQuotes.filter(serverQuote =>
+      !quotes.some(localQuote => localQuote.id === serverQuote.id)
+    );
+  
+    if (newQuotes.length > 0) {
+      quotes.push(...newQuotes);
+      saveQuotes(); // Save updated quotes to local storage
+      alert('New quotes synced from server.');
+    }
+  }
+  
+  // Periodic syncing (e.g., every 10 minutes)
+  setInterval(syncWithServer, 600000); // 600000 ms = 10 minutes
+
+  // Conflict resolution: server data takes precedence
+function resolveConflicts(localQuote, serverQuote) {
+    if (serverQuote.updatedAt > localQuote.updatedAt) {
+      return serverQuote;
+    }
+    return localQuote;
+  }
+  
   
   
 
