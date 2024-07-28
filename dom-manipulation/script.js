@@ -21,6 +21,22 @@ const quotes = [
     quoteInput.id = 'newQuoteText';
     quoteInput.type = 'text';
     quoteInput.placeholder = 'Enter a new quote';
+
+
+    function addQuote() {
+        const newQuoteText = document.getElementById('newQuoteText').value;
+        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+        if (newQuoteText && newQuoteCategory) {
+          quotes.push({ text: newQuoteText, category: newQuoteCategory });
+          document.getElementById('newQuoteText').value = '';
+          document.getElementById('newQuoteCategory').value = '';
+          saveQuotes(); // Save quotes to local storage
+          alert('Quote added successfully!');
+        } else {
+          alert('Please enter both the quote text and category.');
+        }
+      }
+      
   
     const categoryInput = document.createElement('input');
     categoryInput.id = 'newQuoteCategory';
@@ -58,9 +74,6 @@ const quotes = [
   // Call this function to load quotes on page load
   loadQuotes();
 
-  
-
-
   function exportToJsonFile() {
     const dataStr = JSON.stringify(quotes);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
@@ -72,5 +85,18 @@ const quotes = [
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
   }
+
+  function importFromJsonFile(event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function(event) {
+      const importedQuotes = JSON.parse(event.target.result);
+      quotes.push(...importedQuotes);
+      saveQuotes(); // Update local storage with imported quotes
+      alert('Quotes imported successfully!');
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
   
+
+
   
