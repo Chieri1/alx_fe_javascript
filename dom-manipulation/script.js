@@ -57,5 +57,20 @@ const quotes = [
   
   // Call this function to load quotes on page load
   loadQuotes();
+
+  
+
+
+  function exportToJsonFile() {
+    const dataStr = JSON.stringify(quotes);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  
+    const exportFileDefaultName = 'quotes.json';
+  
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  }
   
   
