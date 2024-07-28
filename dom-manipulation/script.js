@@ -192,22 +192,29 @@ async function postQuotesToServer(quote) {
 
 // Function to sync local quotes with the server
 async function syncQuotes() {
-    const serverQuotes = await fetchQuotesFromServer();
+    try {
+      const serverQuotes = await fetchQuotesFromServer();
   
-    // Compare server quotes with local quotes and update local storage
-    const newQuotes = serverQuotes.filter(serverQuote =>
-      !quotes.some(localQuote => localQuote.id === serverQuote.id)
-    );
+      // Compare server quotes with local quotes and update local storage
+      const newQuotes = serverQuotes.filter(serverQuote =>
+        !quotes.some(localQuote => localQuote.id === serverQuote.id)
+      );
   
-    if (newQuotes.length > 0) {
-      quotes.push(...newQuotes);
-      saveQuotes(); // Save updated quotes to local storage
-      alert('New quotes synced from server.');
+      if (newQuotes.length > 0) {
+        quotes.push(...newQuotes);
+        saveQuotes(); // Save updated quotes to local storage
+        alert('Quotes synced with server!'); // Notification to the user
+      } else {
+        alert('No new quotes to sync.'); // Optional message for no updates
+      }
+    } catch (error) {
+      console.error('Error syncing quotes with server:', error);
     }
   }
   
   // Periodic syncing (e.g., every 10 minutes)
   setInterval(syncQuotes, 600000); // 600000 ms = 10 minutes
+  
   
 
   // Conflict resolution: server data takes precedence
