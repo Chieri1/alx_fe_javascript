@@ -42,4 +42,20 @@ const quotes = [
   
   // Call this function to create the form on page load
   createAddQuoteForm();
+
+
+  function saveQuotes() {
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+  }
+  
+  function loadQuotes() {
+    const storedQuotes = localStorage.getItem('quotes');
+    if (storedQuotes) {
+      quotes = JSON.parse(storedQuotes);
+    }
+  }
+  
+  // Call this function to load quotes on page load
+  loadQuotes();
+  
   
