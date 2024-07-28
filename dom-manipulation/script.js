@@ -13,16 +13,33 @@ const quotes = [
   
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
 
-  function addQuote() {
-    const newQuoteText = document.getElementById('newQuoteText').value;
-    const newQuoteCategory = document.getElementById('newQuoteCategory').value;
-    if (newQuoteText && newQuoteCategory) {
-      quotes.push({ text: newQuoteText, category: newQuoteCategory });
-      document.getElementById('newQuoteText').value = '';
-      document.getElementById('newQuoteCategory').value = '';
-      alert('Quote added successfully!');
-    } else {
-      alert('Please enter both the quote text and category.');
-    }
+  
+  function createAddQuoteForm() {
+    // Create form elements
+    const form = document.createElement('div');
+    const quoteInput = document.createElement('input');
+    quoteInput.id = 'newQuoteText';
+    quoteInput.type = 'text';
+    quoteInput.placeholder = 'Enter a new quote';
+  
+    const categoryInput = document.createElement('input');
+    categoryInput.id = 'newQuoteCategory';
+    categoryInput.type = 'text';
+    categoryInput.placeholder = 'Enter quote category';
+  
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Add Quote';
+    addButton.addEventListener('click', addQuote);
+  
+    // Append form elements to the form container
+    form.appendChild(quoteInput);
+    form.appendChild(categoryInput);
+    form.appendChild(addButton);
+  
+    // Append the form to the body or a specific container
+    document.body.appendChild(form);
   }
+  
+  // Call this function to create the form on page load
+  createAddQuoteForm();
   
