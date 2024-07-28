@@ -31,11 +31,13 @@ const quotes = [
           document.getElementById('newQuoteText').value = '';
           document.getElementById('newQuoteCategory').value = '';
           saveQuotes(); // Save quotes to local storage
+          populateCategoryFilter(); // Update category filter dropdown
           alert('Quote added successfully!');
         } else {
           alert('Please enter both the quote text and category.');
         }
       }
+      
       
   
     const categoryInput = document.createElement('input');
@@ -135,9 +137,34 @@ const quotes = [
     }
   }
   
-  populateCategoryFilter();
 
+  function populateCategoryFilter() {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const categories = new Set(quotes.map(quote => quote.category));
+    
+    // Clear existing options except the 'All Categories' option
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
   
+    // Populate dropdown with unique categories
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      categoryFilter.appendChild(option);
+    });
+  
+    // Load the last selected filter from local storage
+    const lastSelectedCategory = localStorage.getItem('selectedCategory');
+    if (lastSelectedCategory) {
+      categoryFilter.value = lastSelectedCategory;
+      filterQuotes(); // Call filterQuotes to apply the filter on load
+    }
+  }
+  
+  // Call this function during the initialization to populate categories on page load
+  populateCategoryFilter();
+    
+
   function filterQuotes() {
     const categoryFilter = document.getElementById('categoryFilter').value;
     const quoteDisplay = document.getElementById('quoteDisplay');
@@ -158,6 +185,7 @@ const quotes = [
     // Save the selected category to local storage
     localStorage.setItem('selectedCategory', categoryFilter);
   }
+  
   
 
 
