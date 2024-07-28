@@ -114,7 +114,7 @@ const quotes = [
   }
  
   
-  function populateCategoryFilter() {
+  function populateCategories() {
     const categoryFilter = document.getElementById('categoryFilter');
     const categories = new Set(quotes.map(quote => quote.category));
     
@@ -137,32 +137,7 @@ const quotes = [
     }
   }
   
-
-  function populateCategoryFilter() {
-    const categoryFilter = document.getElementById('categoryFilter');
-    const categories = new Set(quotes.map(quote => quote.category));
-    
-    // Clear existing options except the 'All Categories' option
-    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
-  
-    // Populate dropdown with unique categories
-    categories.forEach(category => {
-      const option = document.createElement('option');
-      option.value = category;
-      option.textContent = category;
-      categoryFilter.appendChild(option);
-    });
-  
-    // Load the last selected filter from local storage
-    const lastSelectedCategory = localStorage.getItem('selectedCategory');
-    if (lastSelectedCategory) {
-      categoryFilter.value = lastSelectedCategory;
-      filterQuotes(); // Call filterQuotes to apply the filter on load
-    }
-  }
-  
-  // Call this function during the initialization to populate categories on page load
-  populateCategoryFilter();
+  populateCategories();
     
 
   function filterQuotes() {
