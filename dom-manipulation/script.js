@@ -191,7 +191,7 @@ async function postQuotesToServer(quote) {
 }
 
 // Function to sync local quotes with the server
-async function syncWithServer() {
+async function syncQuotes() {
     const serverQuotes = await fetchQuotesFromServer();
   
     // Compare server quotes with local quotes and update local storage
@@ -207,7 +207,8 @@ async function syncWithServer() {
   }
   
   // Periodic syncing (e.g., every 10 minutes)
-  setInterval(syncWithServer, 600000); // 600000 ms = 10 minutes
+  setInterval(syncQuotes, 600000); // 600000 ms = 10 minutes
+  
 
   // Conflict resolution: server data takes precedence
 function resolveConflicts(localQuote, serverQuote) {
